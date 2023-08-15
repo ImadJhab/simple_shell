@@ -9,5 +9,6 @@
 #include <sys/wait.h>
 
 void simple_shell(void);
+void execute_custom_command(const char *command);
 
 #endif
