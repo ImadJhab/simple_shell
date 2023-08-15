@@ -8,10 +8,11 @@
 
 void simple_shell(void)
 {
+	char input[MAX_INPUT_SIZE];
+
 	while (1)
 	{
 	printf("($) ");
-	char input[MAX_INPUT_SIZE];
 
 	if (fgets(input, sizeof(input), stdin) == NULL)
 	{
@@ -31,11 +32,10 @@ void simple_shell(void)
 void execute_custom_command(const char *command)
 {
 	char *args[MAX_INPUT_SIZE];
+	pid_t child_pid = fork();
 
 	args[0] = (char *)command;
 	args[1] = NULL;
-
-	pid_t child_pid = fork();
 
 	if (child_pid == -1)
 	{
