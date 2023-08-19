@@ -1,54 +1,76 @@
 #include "shell.h"
 
 #define MAX_INPUT_SIZE 1024
-
 /**
- * simple_shell - Entry point of the simple shell program
- */
-
-void simple_shell(void)
+ * tokenizes - tokenizes a string
+ * @buff: buffer
+ * @toks: tokens
+ * Return: none
+*/
+void tokenizes(char *buff, char **toks)
 {
-	char input[MAX_INPUT_SIZE];
+	const char *delimiter = "\t\r\n\a";
+	size_t lentok;
+	char *tok = 0;
+	char *buffsize = 0;
+	int i = 0;
 
-	while (1)
+	buffsize = _strdup(buff);
+	tok = strtok(buffsize, delimiter);
+	for (i = 0; tok; i++)
 	{
-	printf("($) ");
-
-	if (fgets(input, sizeof(input), stdin) == NULL)
-	{
-		perror("fgets");
-	break;
+		lentok = _strlen(tok);
+		toks[i] = malloc(sizeof(char *) * lentok);
+		_strncpy(toks[i], tok, lentok + 1);
+		tok = strtok(0, delimiter);
 	}
-	input[strcspn(input, "\n")] = '\0';
-	}
+	free(buffsize);
 }
 /**
- * execute_custom_command - Execute a command using execvp
- * @command: The command to be executed
- *
- * Description: This function creates a child process to execute the specified
- *              command using the execvp system call.
- */
-void execute_custom_command(const char *command)
+ * execute_command - executes a command
+ * @agv: argument vector
+ * @buf: buffer
+ * Return: quits the loop
+*/
+int execute_command(char **agv, char *buf)
 {
-	char *args[MAX_INPUT_SIZE];
-	pid_t child_pid = fork();
+	char *cmnd = 0;
+	pid_t child_pid;
+	int quit;
 
-	args[0] = (char *)command;
-	args[1] = NULL;
-
-	if (child_pid == -1)
+	quit = _builtin(agv, buf);
+	if (quit == -1)
 	{
-		perror("fork");
+		cmnd = get_command(agv[0]);
+		if (!cmnd)
+		{
+			_puts("Command not found");
+			return (2);
+		}
+		child_pid = fork();
+		if (child_pid == -1)
+		{
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
+		else if (child_pid == 0)
+		{
+			if (execve(cmnd, agv, environ) == -1)
+			{
+				perror("execve");
+				free_tokens(agv);
+				free(buf);
+				exit(2);
+			}
+		}
+		else
+		{
+			waitpid(child_pid, &quit, 0);
+			if (quit != 0)
+				quit = 2;
+		}
+		if (_strcmp(cmnd, agv[0]) != 0)
+			free(cmnd);
 	}
-	else if (child_pid == 0)
-	{
-	execvp(args[0], args);
-	perror("execvp");
-	exit(EXIT_FAILURE);
-	}
-	else
-	{
-	wait(NULL);
-	}
+	return (quit);
 }
