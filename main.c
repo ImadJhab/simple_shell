@@ -35,7 +35,7 @@ int main(void)
 		}
 		else
 			exe = false;
-		n = _getline(&buff, &buffsize, STDIN_FILENO);
+		n = getline(&buff, &buffsize, stdin);
 
 		if (n == -1)
 		{
