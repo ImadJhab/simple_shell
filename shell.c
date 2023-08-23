@@ -9,20 +9,20 @@
 */
 void tokenizes(char *buff, char **toks)
 {
-	const char *delimiter = "\t\r\n\a";
 	size_t lentok;
-	char *tok = 0;
+	const char *del = " \t\n";
 	char *buffsize = 0;
+	char *tok = 0;
 	int i = 0;
 
 	buffsize = _strdup(buff);
-	tok = strtok(buffsize, delimiter);
+	tok = strtok(buffsize, del);
 	for (i = 0; tok; i++)
 	{
 		lentok = _strlen(tok);
 		toks[i] = malloc(sizeof(char *) * lentok);
 		_strncpy(toks[i], tok, lentok + 1);
-		tok = strtok(0, delimiter);
+		tok = strtok(0, del);
 	}
 	free(buffsize);
 }
