@@ -64,7 +64,14 @@ int execute_command(char **agv, char *buf)
 		}
 		else if (child_pid == 0)
 		{
-			if (execve(cmnd, agv, environ) == -1)
+			char *new_agv[1024];
+			for (int i = 0; agv[i] != NULL; i++)
+			{
+				new_agv[i] = agv[i];
+			}
+			new_agv[1023] = NULL;
+			
+			if (execve(cmnd, new_agv, environ) == -1)
 			{
 				perror("execve");
 				free_tokens(agv);
