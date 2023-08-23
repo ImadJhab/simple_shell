@@ -11,16 +11,10 @@ void tokenizes(char *buff, char **toks, size_t buffsize)
 	const char *delimiter = " \t\r\n\a";
 	size_t lentok;
 	char *tok = 0;
-	char *buffsize = strdup(buff);
+
+	tok = strtok(buff, delimiter);
 	int i = 0;
 
-	if (buffsize == NULL)
-	{
-		perror("strdup");
-		exit(EXIT_FAILURE);
-	}
-	
-	tok = strtok(buffsize, delimiter);
 	while (tok)
 	{
 		toks[i] = strdup(tok);
@@ -32,7 +26,6 @@ void tokenizes(char *buff, char **toks, size_t buffsize)
 		i++;
 		tok = strtok(NULL, delimiter);
 	}
-	free(buffsize);
 	toks[i] = NULL;
 }
 /**
@@ -64,13 +57,16 @@ int execute_command(char **agv, char *buf)
 		}
 		else if (child_pid == 0)
 		{
-			char *new_agv[1024];
+			size_t new_agv_size = 0;
+
+			for (; agv[new_agv_size] != NULL; new_agv_size++)
+			char *new_agv[new_agv_size + 1];
+
 			for (int i = 0; agv[i] != NULL; i++)
 			{
 				new_agv[i] = agv[i];
 			}
-			new_agv[1023] = NULL;
-			
+			new_agv[new_agv_size] = NULL;
 			if (execve(cmnd, new_agv, environ) == -1)
 			{
 				perror("execve");
