@@ -1,8 +1,18 @@
 #include "shell.h"
-#include <unistd.h>
-#include <fcntl.h>
+/**
+ * free_tokens - free the tokens
+ * @toks: tokens to be freed
+ */
+void free_tokens(char **toks)
+{
+	int count = 0;
 
-#define MAX_TOKENS 100
+	while (toks[count])
+	{
+		free(toks[count]);
+		count++;
+	}
+}
 /**
  * main - main function
  * Return: stat of the shell
@@ -14,18 +24,19 @@ int main(void)
 	bool exe = true;
 	ssize_t n;
 	size_t buffsize = 0;
-	char *toks[MAX_TOKENS] = {0};
+	char *toks[100] = {0};
 
 	while (exe)
 	{
 		if (isatty(STDIN_FILENO))
-			if (write(STDOUT_FILENO, "$ ", 2) == -1) {
-				perror("write");
-				exit(EXIT_FAILURE);
-			}
+		{
+			fflush(stdin);
+			write(1, "$ ", 2);
+		}
 		else
+		{
 			exe = false;
-
+		}
 		n = getline(&buff, &buffsize, stdin);
 
 		if (n == -1)
@@ -39,14 +50,9 @@ int main(void)
 			free(buff);
 			exit(stat);
 		}
-		else if (*buff == '\n' || (*buff == ' ' || *buff == '\t'))
-		{
-			continue;
-		}
 		tokenizes(buff, toks);
 		stat = execute_command(toks, buff);
 		free_tokens(toks);
-		free(buff);
 		buff = NULL;
 		buffsize = 0;
 	}

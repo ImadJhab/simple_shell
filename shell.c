@@ -1,32 +1,30 @@
 #include "shell.h"
 
+#define MAX_INPUT_SIZE 1024
 /**
  * tokenizes - tokenizes a string
  * @buff: buffer
  * @toks: tokens
  * Return: none
 */
-void tokenizes(char *buff, char **toks, size_t buffsize)
+void tokenizes(char *buff, char **toks)
 {
-	const char *delimiter = " \t\r\n\a";
+	const char *delimiter = "\t\r\n\a";
 	size_t lentok;
 	char *tok = 0;
-
-	tok = strtok(buff, delimiter);
+	char *buffsize = 0;
 	int i = 0;
 
-	while (tok)
+	buffsize = _strdup(buff);
+	tok = strtok(buffsize, delimiter);
+	for (i = 0; tok; i++)
 	{
-		toks[i] = strdup(tok);
-		if (toks[i] == NULL)
-		{
-			perror("strdup");
-			exit(EXIT_FAILURE);
-		}
-		i++;
-		tok = strtok(NULL, delimiter);
+		lentok = _strlen(tok);
+		toks[i] = malloc(sizeof(char *) * lentok);
+		_strncpy(toks[i], tok, lentok + 1);
+		tok = strtok(0, delimiter);
 	}
-	toks[i] = NULL;
+	free(buffsize);
 }
 /**
  * execute_command - executes a command
@@ -49,6 +47,7 @@ int execute_command(char **agv, char *buf)
 			_puts("Command not found");
 			return (2);
 		}
+
 		child_pid = fork();
 		if (child_pid == -1)
 		{
@@ -57,17 +56,7 @@ int execute_command(char **agv, char *buf)
 		}
 		else if (child_pid == 0)
 		{
-			size_t new_agv_size = 0;
-
-			for (; agv[new_agv_size] != NULL; new_agv_size++)
-			char *new_agv[new_agv_size + 1];
-
-			for (int i = 0; agv[i] != NULL; i++)
-			{
-				new_agv[i] = agv[i];
-			}
-			new_agv[new_agv_size] = NULL;
-			if (execve(cmnd, new_agv, environ) == -1)
+			if (execve(cmnd, agv, environ) == -1)
 			{
 				perror("execve");
 				free_tokens(agv);
