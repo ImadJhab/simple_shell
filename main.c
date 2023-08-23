@@ -53,6 +53,7 @@ int main(void)
 		tokenizes(buff, toks);
 		stat = execute_command(toks, buff);
 		free_tokens(toks);
+		free(buff);
 		buff = NULL;
 		buffsize = 0;
 	}
