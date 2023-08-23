@@ -1,18 +1,8 @@
 #include "shell.h"
-/**
- * free_tokens - frees the tokens
- * @toks: tokens to be freed
- */
-void free_tokens(char **toks)
-{
-	int count = 0;
+#include <unistd.h>
+#include <fcntl.h>
 
-	while (toks[count])
-	{
-		free(toks[count]);
-		count++;
-	}
-}
+#define MAX_TOKENS 100
 /**
  * main - main function
  * Return: stat of the shell
@@ -24,12 +14,15 @@ int main(void)
 	bool exe = true;
 	ssize_t n;
 	size_t buffsize = 0;
-	char *toks[100] = {0};
+	char *toks[MAX_TOKENS] = {0};
 
 	while (exe)
 	{
 		if (isatty(STDIN_FILENO))
-			write(1, "$ ", 2);
+			if (write(STDOUT_FILENO, "$ ", 2) == -1) {
+				perror("write");
+				exit(EXIT_FAILURE);
+			}
 		else
 			exe = false;
 
