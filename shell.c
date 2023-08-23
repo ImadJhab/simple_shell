@@ -8,22 +8,32 @@
 */
 void tokenizes(char *buff, char **toks)
 {
-	const char *delimiter = "\t\r\n\a";
+	const char *delimiter = " \t\r\n\a";
 	size_t lentok;
 	char *tok = 0;
-	char *buffsize = 0;
+	char *buffsize = strdup(buff);
 	int i = 0;
 
-	buffsize = _strdup(buff);
-	tok = strtok(buffsize, delimiter);
-	for (i = 0; tok; i++)
+	if (buffcopy == NULL)
 	{
-		lentok = _strlen(tok);
-		toks[i] = malloc(sizeof(char *) * lentok);
-		_strncpy(toks[i], tok, lentok + 1);
-		tok = strtok(0, delimiter);
+		perror("strdup");
+		exit(EXIT_FAILURE);
 	}
-	free(buffsize);
+	
+	tok = strtok(buffcopy, delimiter);
+	while (tok)
+	{
+		toks[i] = strdup(tok);
+		if (toks[i] == NULL)
+		{
+			perror("strdup");
+			exit(EXIT_FAILURE);
+		}
+		i++;
+		tok = strtok(NULL, delimiter);
+	}
+	free(buffcopy);
+	toks[i] = NULL;
 }
 /**
  * execute_command - executes a command
