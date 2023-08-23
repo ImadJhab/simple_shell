@@ -6,7 +6,7 @@
  * @toks: tokens
  * Return: none
 */
-void tokenizes(char *buff, char **toks)
+void tokenizes(char *buff, char **toks, size_t buffsize)
 {
 	const char *delimiter = " \t\r\n\a";
 	size_t lentok;
@@ -14,13 +14,13 @@ void tokenizes(char *buff, char **toks)
 	char *buffsize = strdup(buff);
 	int i = 0;
 
-	if (buffcopy == NULL)
+	if (buffsize == NULL)
 	{
 		perror("strdup");
 		exit(EXIT_FAILURE);
 	}
 	
-	tok = strtok(buffcopy, delimiter);
+	tok = strtok(buffsize, delimiter);
 	while (tok)
 	{
 		toks[i] = strdup(tok);
@@ -32,7 +32,7 @@ void tokenizes(char *buff, char **toks)
 		i++;
 		tok = strtok(NULL, delimiter);
 	}
-	free(buffcopy);
+	free(buffsize);
 	toks[i] = NULL;
 }
 /**
