@@ -10,6 +10,8 @@
 #include <sys/stat.h>
 #include <stdbool.h>
 
+#define BUFSIZE 1024
+
 extern char **environ;
 
 int env1(void);

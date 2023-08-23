@@ -1,5 +1,6 @@
 #include "shell.h"
 
+#define READ_SIZE 1024
 /**
  * _getline - gets a line from a file descriptor
  * @ln: pointer to store the line
