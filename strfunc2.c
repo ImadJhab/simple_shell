@@ -35,12 +35,12 @@ int _putchar(char c)
  * @str: pointer of a string
  * Return: none
  */
-int _puts(char *str)
+void _puts(char *str)
 {
 	while (*str != '\0')
 	{
 		_putchar(*str);
 		str++;
 	}
-	return (0);
+	_putchar('\n');
 }

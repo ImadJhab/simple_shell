@@ -50,6 +50,8 @@ int main(void)
 			free(buff);
 			exit(stat);
 		}
+		if (*buff == '\n' || (*buff == ' ' || *buff == '\t'))
+			continue;
 		tokenizes(buff, toks);
 		stat = execute_command(toks, buff);
 		free_tokens(toks);

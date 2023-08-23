@@ -23,7 +23,7 @@ int _strcmp(char *ss1, char *ss2);
 int _putchar(char c);
 int _strlen(char *p);
 char *_strcpy(char *go, char *sr);
-int _puts(char *str);
+void _puts(char *str);
 char *_strdup(char *str);
 char *_strcat(char *go, char *sr);
 char *_strncpy(char *dest, char *src, int n);
