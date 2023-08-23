@@ -19,7 +19,7 @@ void free_tokens(char **toks)
 */
 int main(void)
 {
-	int stat = 0;
+	int statt = 0;
 	char *buff = NULL;
 	bool exe = true;
 	ssize_t n;
@@ -34,9 +34,7 @@ int main(void)
 			write(1, "$ ", 2);
 		}
 		else
-		{
 			exe = false;
-		}
 		n = getline(&buff, &buffsize, stdin);
 
 		if (n == -1)
@@ -48,17 +46,17 @@ int main(void)
 			}
 			perror("getline");
 			free(buff);
-			exit(stat);
+			exit(statt);
 		}
 		if (*buff == '\n' || (*buff == ' ' || *buff == '\t'))
 			continue;
 		tokenizes(buff, toks);
-		stat = execute_command(toks, buff);
-		free_tokens(toks);
+		statt = execute_command(toks, buff);
 		free(buff);
+		free_tokens(toks);
 		buff = NULL;
 		buffsize = 0;
 	}
 	free(buff);
-	return (stat);
+	return (statt);
 }

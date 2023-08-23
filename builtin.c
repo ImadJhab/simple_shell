@@ -7,13 +7,13 @@
 */
 int _builtin(char **toks, char *buff)
 {
-	if (_strcmp(toks[0], "exit") == 0)
-	{
-		return (exit_sh(toks, buff));
-	}
-	else if (_strcmp(toks[0], "env") == 0)
+	if (_strcmp(toks[0], "env") == 0)
 	{
 		return (env1());
+	}
+	else if (_strcmp(toks[0], "exit") == 0)
+	{
+		return (exit_sh(toks, buff));
 	}
 	else
 	{

@@ -44,7 +44,7 @@ int execute_command(char **agv, char *buf)
 		cmnd = get_command(agv[0]);
 		if (!cmnd)
 		{
-			_puts("Command not found");
+			_puts("./shell: No such file or directory");
 			return (2);
 		}
 
