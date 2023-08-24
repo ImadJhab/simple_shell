@@ -31,6 +31,6 @@ char *_strcat(char *go, char *sr);
 char *_strncpy(char *dest, char *src, int n);
 char *_env(char *n);
 void tokenizes(char *buff, char **tok);
-ssize_t _getline(char **ln, size_t *bufsize, int fd);
+ssize_t custom_getline(char **ln, size_t *bufsize, int fd);
 
 #endif
