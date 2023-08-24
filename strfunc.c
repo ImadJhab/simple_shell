@@ -56,7 +56,7 @@ char *_strcpy(char *go, char *sr)
 */
 char *_strdup(char *str)
 {
-	int len;
+	int ln;
 	char *sec;
 
 	if (str == 0)
@@ -64,8 +64,8 @@ char *_strdup(char *str)
 		return (0);
 	}
 
-	len = _strlen(str);
-	sec = (char *) malloc((len + 1) * sizeof(char));
+	ln = _strlen(str);
+	sec = (char *) malloc((ln + 1) * sizeof(char));
 
 	if (sec == 0)
 	{
