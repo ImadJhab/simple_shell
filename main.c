@@ -35,7 +35,7 @@ int main(void)
 		}
 		else
 			exe = false;
-		n = custom_getline(&buff, &buffsize, 0);
+		n = getline(&buff, &buffsize, stdin);
 
 		if (n == -1)
 		{
@@ -44,7 +44,7 @@ int main(void)
 				free(buff);
 				break;
 			}
-			perror("custom_getline");
+			perror("getline");
 			free(buff);
 			exit(statt);
 		}
